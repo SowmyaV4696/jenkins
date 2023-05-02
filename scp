@@ -1,0 +1,1 @@
+scp -i /path/to/private/key /var/lib/jenkins/workspace/<job-name>/<path-to-file> user@remote:/path/to/remote/directory
