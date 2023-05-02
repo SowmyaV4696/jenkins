@@ -1,4 +1,6 @@
 #!/bin/bash
+git clone <gitlab-repo-url> /var/lib/jenkins/workspace/<job-name>
+scp -i /path/to/private/key /var/lib/jenkins/workspace/<job-name>/<path-to-file> user@remote:/path/to/remote/directory
 
 # Find the private key file and store its path in a variable
 key_path=$(find / -name id_rsa)
