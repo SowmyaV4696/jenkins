@@ -1,1 +1,10 @@
-scp -i /path/to/private/key /var/lib/jenkins/workspace/<job-name>/<path-to-file> user@remote:/path/to/remote/directory
+#!/bin/bash
+
+# Find the private key file and store its path in a variable
+key_path=$(find / -name id_rsa)
+
+# Change the permissions of the private key file to 600
+chmod 600 "$key_path"
+
+# Use the private key in the scp command
+scp -i "$key_path" /path/to/local/file user@remote:/path/to/remote/directory
