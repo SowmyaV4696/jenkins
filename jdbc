@@ -1,0 +1,28 @@
+To downgrade the jdbc plugin version from 5.4.1 to 5.4.0 while keeping your Logstash version as 8.6.2, you can follow these steps:
+
+Stop your Logstash instance if it's currently running.
+Navigate to the Logstash installation directory on your system.
+Locate the Gemfile.lock file in the logstash-8.6.2 directory.
+Open the Gemfile.lock file in a text editor.
+Search for the jdbc entry in the file. It should look something like this:
+scss
+Copy code
+jdbc (5.4.1)
+  logstash-mixin-configuration (>= 0)
+  sequel (~> 5.39)
+Change the version number from 5.4.1 to 5.4.0, like this:
+scss
+Copy code
+jdbc (5.4.0)
+  logstash-mixin-configuration (>= 0)
+  sequel (~> 5.39)
+Save the Gemfile.lock file.
+Delete the Gemfile.lock file.
+Open a terminal or command prompt window.
+Navigate to the logstash-8.6.2 directory.
+Run the following command to install the new version of the jdbc plugin:
+python
+Copy code
+bin/logstash-plugin install logstash-input-jdbc -v 5.4.0
+Start your Logstash instance.
+After following these steps, your Logstash instance should be running with the jdbc plugin version of 5.4.0.
