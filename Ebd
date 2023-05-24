@@ -1,0 +1,13 @@
+{
+  "actions": {
+    "send_email": {
+      "email": {
+        "to": "your_email@example.com",
+        "subject": "CPU Threshold Alert",
+        "body": {
+          "text": "CPU usage exceeds threshold: {{#parseFloat (regex_replace context.value \"[^0-9.]+\" \"\")}}{{this}}{{/parseFloat}}"
+        }
+      }
+    }
+  }
+}
