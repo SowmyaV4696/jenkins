@@ -1,0 +1,69 @@
+PUT _watcher/watch/cpu_threshold_watch
+{
+  "trigger": {
+    "schedule": {
+      "interval": "5m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "indices": ["your_index_pattern"],
+        "body": {
+          "query": {
+            "bool": {
+              "filter": [
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-5m"
+                    }
+                  }
+                },
+                {
+                  "range": {
+                    "system.cpu.total.norm.pct": {
+                      "gt": 0.5
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "size": 0,
+          "aggs": {
+            "by_hostname": {
+              "terms": {
+                "field": "hostname.keyword",
+                "size": 10
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "script": {
+      "source": "return ctx.payload.hits.total.value > 0"
+    }
+  },
+  "actions": {
+    "send_email": {
+      "email": {
+        "to": "your_email@example.com",
+        "subject": "CPU Threshold Alert",
+        "body": {
+          "text": "Hostnames: {{#ctx.payload.aggregations.by_hostname.buckets}}{{key}}\n{{/ctx.payload.aggregations.by_hostname.buckets}}",
+          "attachments": {
+            "data.json": {
+              "data": {
+                "serverNames": "{{#ctx.payload.aggregations.by_hostname.buckets}}{{key}},{{/ctx.payload.aggregations.by_hostname.buckets}}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
